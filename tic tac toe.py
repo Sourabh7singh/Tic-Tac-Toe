@@ -28,7 +28,6 @@ def SinglePlayer():
             print("X's chance")
             answer=int(input("Play your chance: "))
             choices.remove(answer)
-            print("Choices >>",choices)
             if(state1[answer]==1 or state2[answer]==1):
                 print("Already filled")
             else:
