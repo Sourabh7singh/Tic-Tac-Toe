@@ -32,6 +32,7 @@ def SinglePlayer():
                 print("Already filled")
             else:
                 state1[answer]=1
+                CheckDraw(state1,state2)
                 if Checkwin(state1):
                     board(state1,state2)
                     print("X has won")
@@ -51,6 +52,7 @@ def SinglePlayer():
                     elif (state1[win[2]] == 0 and state2[win[2]] == 0) and (state1[win[1]]==0 or state2[win[1]]==1) and (state1[win[0]]==0 or state2[win[0]]==1):
                         answer = win[2]
                         changed = True
+            # Check for blocking the opponent as well
             newanswer = -1
             for win in wins:
                 if state1[win[0]] + state1[win[1]] + state1[win[2]] == 2:
@@ -73,14 +75,16 @@ def SinglePlayer():
                 # prioritize corner and middle place
                 if (state1[0] == 0 and state2[0] == 0) or (state1[2] == 0 and state2[2] == 0) or (state1[6] == 0 and state2[6] == 0) or (state1[8] == 0 and state2[8] == 0) or(state1[4] == 0 and state2[4] == 0):
                     answer = random.choice([0, 2, 6, 8, 4])
+                    choices.remove(answer)
                 else:
                     answer = random.choice([1, 3, 5, 7])
-                choices.remove(answer)
+                    choices.remove(answer)
                 print(f"Computer choose {answer} from random")
             if(state1[answer]==1 or state2[answer]==1):
                 print("Already filled")
             else:    
                 state2[answer]=1
+                CheckDraw(state1,state2)
                 if Checkwin(state2):
                     board(state1,state2)
                     print("O has won")
@@ -124,8 +128,8 @@ def Checkwin(state):
     return False
 
 def CheckDraw(state1,state2):
-    board(state1,state2)
     if(sum(state1) + sum(state2) == 9):
+        board(state1,state2)
         print("The match was a Draw")
         quit()
     
@@ -141,4 +145,5 @@ def main():
     else:
         print("Invalid input")
         
-main()
+if __name__ == "__main__":
+    main()

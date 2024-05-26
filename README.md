@@ -3,4 +3,7 @@ I create this game a time ago it was not capable of making decision to place it'
 
 ![sample](image.png)
 
-in future i want to add a gui to the game as well using Tkinter
+## New Sample
+![sample game](image-1.png) 
+
+In future,I want to add a GUI to the game as well using Tkinter.
