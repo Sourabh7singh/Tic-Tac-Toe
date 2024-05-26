@@ -39,6 +39,7 @@ def SinglePlayer():
         else:
             print("O's chance")
             changed = False
+            # Checking for self wins only
             for win in wins:
                 if state2[win[0]] + state2[win[1]] + state2[win[2]] == 1 or state2[win[0]] + state2[win[1]] + state2[win[2]] == 2:
                     if (state1[win[0]] == 0 and state2[win[0]] == 0)and (state1[win[1]]==0 and state2[win[1]]==1) and (state1[win[2]]==0 or state2[win[2]]==1):
@@ -50,10 +51,30 @@ def SinglePlayer():
                     elif (state1[win[2]] == 0 and state2[win[2]] == 0) and (state1[win[1]]==0 or state2[win[1]]==1) and (state1[win[0]]==0 or state2[win[0]]==1):
                         answer = win[2]
                         changed = True
+            newanswer = -1
+            for win in wins:
+                if state1[win[0]] + state1[win[1]] + state1[win[2]] == 2:
+                    if state1[win[0]]==0 and state2[win[0]]==0:
+                        newanswer = win[0]
+                        break
+                    elif state1[win[1]]==0 and state2[win[1]]==0:
+                        newanswer = win[1]
+                        break
+                    elif state1[win[2]]==0 and state2[win[2]]==0:
+                        newanswer = win[2]
+                        break
+            if newanswer != -1:
+                # prioritize blocking first then self winning
+                answer = newanswer
+                changed = True
             if changed:
                 print(f"Computer choose {answer} from algorithm")
             else:
-                answer = random.choice(choices)
+                # prioritize corner and middle place
+                if (state1[0] == 0 and state2[0] == 0) or (state1[2] == 0 and state2[2] == 0) or (state1[6] == 0 and state2[6] == 0) or (state1[8] == 0 and state2[8] == 0) or(state1[4] == 0 and state2[4] == 0):
+                    answer = random.choice([0, 2, 6, 8, 4])
+                else:
+                    answer = random.choice([1, 3, 5, 7])
                 choices.remove(answer)
                 print(f"Computer choose {answer} from random")
             if(state1[answer]==1 or state2[answer]==1):
@@ -79,6 +100,7 @@ def Multiplayer():
                 print("Already filled")
                 continue
             state1[answer]=1
+            CheckDraw(state1,state2)
             if Checkwin(state1):
                 print("X has won")
                 break
@@ -89,6 +111,7 @@ def Multiplayer():
                 print("Already filled")
                 continue
             state2[answer]=1
+            CheckDraw(state1,state2)
             if Checkwin(state2):
                 print("0 has won")
                 break
@@ -100,6 +123,12 @@ def Checkwin(state):
             return True
     return False
 
+def CheckDraw(state1,state2):
+    board(state1,state2)
+    if(sum(state1) + sum(state2) == 9):
+        print("The match was a Draw")
+        quit()
+    
 def main():
     print("Welcome to the Game")
     print("1. For single player")
